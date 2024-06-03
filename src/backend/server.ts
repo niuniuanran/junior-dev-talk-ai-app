@@ -37,7 +37,7 @@ async function main() {
           
           Please provide a json object with only one field, "groups". 
           The "groups" field will be an array of 4 objects, each has a "summary",  "originalIdeas" field about the group. 
-          The "summary" field is a high-level description of this group. It is a string no longer than 15 words.
+          The "summary" field is a high-level description of this group. It is a string no longer than 15 words, ending with an emoji.
           The "originalNotes" field is an array of the original item I provided to you.`
         },
         {
@@ -48,7 +48,6 @@ async function main() {
       temperature: 0.8,
     });
 
-    console.log("response.choices[0].message.content", response.choices[0].message.content)
     res.send(response.choices[0].message.content);
     // https://platform.openai.com/docs/quickstart?context=node
     // https://platform.openai.com/docs/api-reference/chat/create
