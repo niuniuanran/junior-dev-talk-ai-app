@@ -3,6 +3,11 @@ import * as express from "express";
 import * as cors from "cors";
 import { createBaseServer } from "../../utils/backend/base_backend/create";
 import * as aws from "aws-sdk"
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
 async function main() {
   const s3 = new aws.S3();
@@ -21,6 +26,23 @@ async function main() {
 
   router.post("/summarize-items", async (req, res) => {
     const items = req.body;
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        {
+          "role": "system",
+          "content": "You will be provided with a message, and your task is to respond using emojis only."
+        },
+        {
+          "role": "user",
+          "content": "How are you?"
+        }
+      ],
+      temperature: 0.8,
+      max_tokens: 64,
+      top_p: 1,
+    });
     res.send([`Hello, world`]);
     // https://platform.openai.com/docs/quickstart?context=node
   });
