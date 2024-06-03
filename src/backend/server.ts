@@ -22,6 +22,7 @@ async function main() {
   router.post("/summarize-items", async (req, res) => {
     const items = req.body;
     res.send([`Hello, world`]);
+    // https://platform.openai.com/docs/quickstart?context=node
   });
 
   router.post("/generate-music", async (req, res) => {
