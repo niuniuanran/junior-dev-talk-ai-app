@@ -2,7 +2,7 @@ import React from "react";
 import { useSelection } from "../utils/use_selection_hook";
 import { Button } from "@canva/app-ui-kit";
 import styles from "styles/components.css";
-import { addNativeElement } from "@canva/design";
+import { addNativeElement, addPage } from "@canva/design";
 
 export function App() {
   // https://www.canva.dev/docs/apps/reading-elements/#plain-text-2
@@ -29,10 +29,20 @@ export function App() {
       return;
     }
     const summary = await response.json();
-    await addNativeElement({
-      type: "TEXT",
-      children: summary,
-    });
+    await addPage({
+      background: {color:"#000000"},
+      elements: [
+        {
+          type: "TEXT",
+          children: summary,
+          fontSize: 40,
+          fontWeight: "bold",
+          color:"#ffffff",
+          top: 10,
+          left: 10,
+        },
+      ],
+    })
   };
 
   return (
