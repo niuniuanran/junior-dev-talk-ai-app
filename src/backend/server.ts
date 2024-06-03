@@ -5,9 +5,7 @@ import { createBaseServer } from "../../utils/backend/base_backend/create";
 import * as aws from "aws-sdk"
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
+const openai = new OpenAI();
 
 async function main() {
   const s3 = new aws.S3();
@@ -28,22 +26,21 @@ async function main() {
     const items = req.body;
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4",
+      model: "gpt-3.5-turbo-16k",
       messages: [
         {
           "role": "system",
-          "content": "You will be provided with a message, and your task is to respond using emojis only."
+          "content": "You will be provided a JavaScript array of string. These strings are ideas from a whiteboard. Please summarize these ideas into groups and return a JavaScript array of string, each string is a one-sentence summarization of this group of ideas. Each sentence should be between 20 to 40 words."
         },
         {
           "role": "user",
-          "content": "How are you?"
+          "content": JSON.stringify(items)
         }
       ],
       temperature: 0.8,
-      max_tokens: 64,
-      top_p: 1,
+      max_tokens: 256,
     });
-    res.send([`Hello, world`]);
+    res.send(response.choices[0].message.content);
     // https://platform.openai.com/docs/quickstart?context=node
     // https://platform.openai.com/docs/api-reference/chat/create
     // https://platform.openai.com/docs/examples/default-emoji-chatbot?lang=node.js
