@@ -21,7 +21,7 @@ async function main() {
 
   router.post("/summarize-items", async (req, res) => {
     const items = req.body;
-    res.send([`You have sent me ${items.length} items`]);
+    res.send([`Hello, world`]);
   });
 
   router.post("/generate-music", async (req, res) => {
