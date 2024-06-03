@@ -5,12 +5,6 @@ import { createBaseServer } from "../../utils/backend/base_backend/create";
 import * as aws from "aws-sdk"
 
 async function main() {
-  aws.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION
-  });
-
   const s3 = new aws.S3();
   const APP_ID = process.env.CANVA_APP_ID;
 
@@ -37,9 +31,8 @@ async function main() {
       Key: "example.mp3",
       Expires: 60 * 5,
     };
-    // S3 getSignedUrl with callbacks is not supported in AWS SDK for JavaScript (v3).
-    // Please convert to 'client.getSignedUrl(apiName, options)', and re-run aws-sdk-js-codemod.
     s3.getSignedUrl('getObject', params, (err, url) => {
+      console.log("url", url)
       if (err) {
         res.status(500).json({ error: "Error -> " + err });
       } else {
