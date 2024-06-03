@@ -25,7 +25,7 @@ async function main() {
 
   router.post("/generate-music", async(req, res) => {
     const text = req.body.text;
-    res.send(`${process.env.CANVA_BACKEND_HOST}/music/example.mp3`);
+    res.send({url: `${process.env.CANVA_BACKEND_HOST}/music/example.mp3`});
     // https://huggingface.co/facebook/musicgen-small
   })
 
