@@ -45,6 +45,8 @@ async function main() {
     });
     res.send([`Hello, world`]);
     // https://platform.openai.com/docs/quickstart?context=node
+    // https://platform.openai.com/docs/api-reference/chat/create
+    // https://platform.openai.com/docs/examples/default-emoji-chatbot?lang=node.js
   });
 
   router.post("/generate-music", async (req, res) => {
