@@ -31,7 +31,14 @@ async function main() {
       messages: [
         {
           "role": "system",
-          "content": "You will be provided a JavaScript array of string. These strings are ideas from a whiteboard. Please summarize these ideas into groups and return a JavaScript array of string, each string is a one-sentence summarization of this group of ideas. Each sentence should be between 20 to 40 words."
+          "content": `You are grouping and summarizing people's ideas from a whiteboard session. 
+          You will be provided a JavaScript array of string, each string is an idea.
+          Please sort them into 4 groups and summarize them. 
+          
+          Please provide a json object with only one field, "groups". 
+          The "groups" field will be an array of 4 objects, each has a "summary",  "originalIdeas" field about the group. 
+          The "summary" field is a high-level description of this group. It is a string no longer than 15 words.
+          The "originalNotes" field is an array of the original item I provided to you.`
         },
         {
           "role": "user",
@@ -39,8 +46,9 @@ async function main() {
         }
       ],
       temperature: 0.8,
-      max_tokens: 256,
     });
+
+    console.log("response.choices[0].message.content", response.choices[0].message.content)
     res.send(response.choices[0].message.content);
     // https://platform.openai.com/docs/quickstart?context=node
     // https://platform.openai.com/docs/api-reference/chat/create
