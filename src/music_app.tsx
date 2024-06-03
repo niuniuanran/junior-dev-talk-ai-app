@@ -1,20 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { useSelection } from "../utils/use_selection_hook";
-import { Button, Rows } from "@canva/app-ui-kit";
+import { Button } from "@canva/app-ui-kit";
 import styles from "styles/components.css";
 import { addAudioTrack } from "@canva/design";
 import { upload } from "@canva/asset";
 
 export function App() {
   const currentSelection = useSelection("plaintext");
-  const [state, setState] = useState<"idle" | "loading" | "error">("idle");
-  const isElementSelected = currentSelection.count > 0;
 
   const getMusicFromText = async () => {
-    if (!isElementSelected) {
+    if (currentSelection.count < 1) {
       return;
     }
-    setState("loading")
     const draft = await currentSelection.read();
     const text = draft.contents[0].text;
     const musicUrl = `${BACKEND_HOST}/generate-music`;
@@ -26,7 +23,7 @@ export function App() {
       body: JSON.stringify({ text: text }),
     });
     if (!response.ok) {
-      setState("error")
+      console.error("😅", response);
       return;
     }
     const data = await response.json();
@@ -40,21 +37,13 @@ export function App() {
     await addAudioTrack({
       ref: result.ref,
     });
-    setState("idle")
   };
 
   return (
     <div className={styles.scrollContainer}>
-      <Rows spacing="1u">
-        <Button
-          loading={state === "loading"}
-          variant="primary"
-          disabled={!isElementSelected}
-          onClick={getMusicFromText}
-        >
-          Add Music
-        </Button>
-      </Rows>
+      <Button variant="primary" onClick={getMusicFromText}>
+        Add Music
+      </Button>
     </div>
   );
 }

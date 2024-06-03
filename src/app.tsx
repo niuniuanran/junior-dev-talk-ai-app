@@ -1,17 +1,16 @@
 import React from "react";
 import { useSelection } from "../utils/use_selection_hook";
-import { Button, Rows } from "@canva/app-ui-kit";
+import { Button } from "@canva/app-ui-kit";
 import styles from "styles/components.css";
 import { addNativeElement } from "@canva/design";
 
 export function App() {
   // https://www.canva.dev/docs/apps/reading-elements/#plain-text-2
   const currentSelection = useSelection("plaintext");
-  const isElementSelected = currentSelection.count > 0;
 
   const summarizeSelectedItems = async () => {
-    if (!isElementSelected) {
-      return;
+    if (currentSelection.count < 1) {
+      return
     }
     const draft = await currentSelection.read();
     const items = draft.contents.map((content) => content.text);
@@ -40,7 +39,6 @@ export function App() {
     <div className={styles.scrollContainer}>
       <Button
         variant="primary"
-        disabled={!isElementSelected}
         onClick={summarizeSelectedItems}
         stretch
       >
