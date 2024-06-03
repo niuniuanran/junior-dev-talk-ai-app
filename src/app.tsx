@@ -45,13 +45,13 @@ export function App() {
     }
     const draft = await currentSelection.read();
     const text = draft.contents[0].text;
-    const musicUrl = `${BACKEND_HOST}/music`;
+    const musicUrl = `${BACKEND_HOST}/generate-music`;
     const response = await fetch(musicUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: text,
+      body: JSON.stringify({text: text}),
     });
     if (!response.ok) {
       return;

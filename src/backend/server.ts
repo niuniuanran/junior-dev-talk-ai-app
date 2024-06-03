@@ -2,7 +2,7 @@ require("dotenv").config();
 import * as express from "express";
 import * as cors from "cors";
 import { createBaseServer } from "../../utils/backend/base_backend/create";
-import { createJwtMiddleware } from "../../utils/backend/jwt_middleware";
+import * as path from "path";
 
 async function main() {
   const APP_ID = process.env.CANVA_APP_ID;
@@ -24,9 +24,15 @@ async function main() {
   });
 
   router.post("/generate-music", async(req, res) => {
-    const sentence = req.body;
-    res.send([`You have sent me a sentence with ${sentence.split().length} words`]);
+    const text = req.body.text;
+    res.send(`${process.env.CANVA_BACKEND_HOST}/music/example.mp3`);
     // https://huggingface.co/facebook/musicgen-small
+  })
+
+  router.get("/music/:audio", async(req, res) => {
+    const audioId = req.params.audio;
+    const filePath = path.join(__dirname, audioId);
+    res.sendFile(filePath);
   })
 
   const server = createBaseServer(router);
