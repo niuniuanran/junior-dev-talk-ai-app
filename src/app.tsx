@@ -57,11 +57,12 @@ export function App() {
       return;
     }
     const data = await response.json();
+    console.log("data.url", data.url)
     const result = await upload({
       type: "AUDIO",
       title: "My Audio",
       url: data.url,
-      mimeType: "audio/wav",
+      mimeType: "audio/mp3",
       durationMs: 86047,
     });
     await addAudioTrack({
