@@ -2,9 +2,16 @@ require("dotenv").config();
 import * as express from "express";
 import * as cors from "cors";
 import { createBaseServer } from "../../utils/backend/base_backend/create";
-import * as path from "path";
+import * as aws from "aws-sdk"
 
 async function main() {
+  aws.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION
+  });
+
+  const s3 = new aws.S3();
   const APP_ID = process.env.CANVA_APP_ID;
 
   if (!APP_ID) {
@@ -23,16 +30,23 @@ async function main() {
     res.send([`You have sent me ${items.length} items`]);
   });
 
-  router.post("/generate-music", async(req, res) => {
+  router.post("/generate-music", async (req, res) => {
     const text = req.body.text;
-    res.send({url: `${process.env.CANVA_BACKEND_HOST}/music/example.mp3`});
+    const params = {
+      Bucket: 'anran-audio-bucket',
+      Key: "example.mp3",
+      Expires: 60 * 5,
+    };
+    // S3 getSignedUrl with callbacks is not supported in AWS SDK for JavaScript (v3).
+    // Please convert to 'client.getSignedUrl(apiName, options)', and re-run aws-sdk-js-codemod.
+    s3.getSignedUrl('getObject', params, (err, url) => {
+      if (err) {
+        res.status(500).json({ error: "Error -> " + err });
+      } else {
+        res.json({ url: url });
+      }
+    });
     // https://huggingface.co/facebook/musicgen-small
-  })
-
-  router.get("/music/:audio", async(req, res) => {
-    const audioId = req.params.audio;
-    const filePath = path.join(__dirname, audioId);
-    res.sendFile(filePath);
   })
 
   const server = createBaseServer(router);
