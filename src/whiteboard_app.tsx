@@ -29,20 +29,31 @@ export function App() {
       return;
     }
     const summary = await response.json();
-    await addPage({
-      background: {color:"#000000"},
-      elements: [
-        {
-          type: "TEXT",
-          children: summary,
-          fontSize: 40,
-          fontWeight: "bold",
-          color:"#ffffff",
-          top: 10,
-          left: 10,
-        },
-      ],
-    })
+    for (let i = 0; i < summary.groups.length; i++) {
+      await addPage({
+        title: summary.groups[i].summary,
+        background: {color:"#000000"},
+        elements: [
+          {
+            type: "TEXT",
+            children: [summary.groups[i].summary],
+            fontSize: 90,
+            fontWeight: "bold",
+            top: 10,
+            left: 10,
+            color:"#ffffff",
+          },
+          ...summary.groups[i].originalIdeas.map((idea, i) => ({
+            type: "TEXT",
+            children: [idea],
+            fontSize: 50,
+            top: i * 60 + 150,
+            left: 10,
+            color:"#ffffff",
+          })),
+        ],
+      })
+    }
   };
 
   return (
@@ -52,7 +63,7 @@ export function App() {
         onClick={summarizeSelectedItems}
         stretch
       >
-        Summarize Selected Items
+        Group Selected Items
       </Button>
     </div>
   );

@@ -22,7 +22,13 @@ async function main() {
 
   router.post("/summarize-items", async (req, res) => {
     const items = req.body;
-    res.send([`Hello, world`]);
+    res.send(
+      {
+        groups: new Array(3).fill(1).map((_, i) => ({
+          summary: `Group ${i+1}`,
+          originalIdeas: items.slice(i * (items.length / 3), (i+1) * (items.length / 3))
+        }))
+      });
     // https://platform.openai.com/docs/quickstart?context=node
     // https://platform.openai.com/docs/api-reference/chat/create
     // https://platform.openai.com/docs/examples/default-emoji-chatbot?lang=node.js
@@ -57,7 +63,7 @@ async function main() {
         Body: new Uint8Array(await response.arrayBuffer()),
         ContentType: 'audio/wav'
       }).promise();
-  
+
       // Generate a signed URL for the uploaded object
       const signedUrl = s3.getSignedUrl('getObject', {
         Bucket: S3_BUCKET_NAME,
