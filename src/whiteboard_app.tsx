@@ -32,20 +32,24 @@ export function App() {
     for (let i = 0; i < summary.groups.length; i++) {
       await addPage({
         title: summary.groups[i].summary,
+        background: {color:"#000000"},
         elements: [
           {
             type: "TEXT",
             children: [summary.groups[i].summary],
-            fontSize: 40,
+            fontSize: 90,
             fontWeight: "bold",
             top: 10,
             left: 10,
+            color:"#ffffff",
           },
           ...summary.groups[i].originalIdeas.map((idea, i) => ({
             type: "TEXT",
             children: [idea],
-            top: i * 40 + 100,
+            fontSize: 50,
+            top: i * 60 + 150,
             left: 10,
+            color:"#ffffff",
           })),
         ],
       })
