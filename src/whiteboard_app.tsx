@@ -7,7 +7,7 @@ import { addPage } from "@canva/design";
 export function App() {
   // https://www.canva.dev/docs/apps/reading-elements/#plain-text-2
   const currentSelection = useSelection("plaintext");
-  const [state, setState] = useState<"idle" | "error" | "loading">("error");
+  const [state, setState] = useState<"idle" | "error" | "loading">("idle");
   const summarizeSelectedItems = async () => {
     setState("loading");
     if (currentSelection.count < 1) {

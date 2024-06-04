@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelection } from "../utils/use_selection_hook";
-import { Button } from "@canva/app-ui-kit";
+import { Button, Title } from "@canva/app-ui-kit";
 import styles from "styles/components.css";
 import { addAudioTrack } from "@canva/design";
 import { upload } from "@canva/asset";
 
 export function App() {
   const currentSelection = useSelection("plaintext");
+  const [state, setState] = useState<"idle" | "error" | "loading">("error");
 
   const getMusicFromText = async () => {
     if (currentSelection.count < 1) {
@@ -24,6 +25,7 @@ export function App() {
     });
     if (!response.ok) {
       console.error("😅", response);
+      setState("error");
       return;
     }
     const data = await response.json();
@@ -39,9 +41,21 @@ export function App() {
     });
   };
 
+  if (state === "error") {
+    return (
+      <div className={styles.scrollContainer}>
+        <Title> 😅😅Something went wrong😅😅</Title>
+      </div>
+    );
+  }
   return (
     <div className={styles.scrollContainer}>
-      <Button variant="primary" onClick={getMusicFromText} stretch>
+      <Button
+        variant="primary"
+        onClick={getMusicFromText}
+        stretch
+        loading={state === "loading"}
+      >
         Add Music
       </Button>
     </div>
