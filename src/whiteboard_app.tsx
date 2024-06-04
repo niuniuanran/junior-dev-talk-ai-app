@@ -32,6 +32,7 @@ export function App() {
     }
     const summary = await response.json();
     for (let i = 0; i < summary.groups.length; i++) {
+      // https://www.canva.dev/docs/apps/api/design-add-page/
       await addPage({
         title: summary.groups[i].summary,
         background: { color: "#000000" },
