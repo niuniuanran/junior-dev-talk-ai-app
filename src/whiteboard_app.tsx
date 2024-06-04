@@ -1,13 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelection } from "../utils/use_selection_hook";
 import { Button } from "@canva/app-ui-kit";
 import styles from "styles/components.css";
-import { addNativeElement, addPage } from "@canva/design";
+import { addPage } from "@canva/design";
 
 export function App() {
   // https://www.canva.dev/docs/apps/reading-elements/#plain-text-2
   const currentSelection = useSelection("plaintext");
-
+  const [state, setState] = useState<"idle" | "error" | "loading">("idle");
   const summarizeSelectedItems = async () => {
     if (currentSelection.count < 1) {
       return
