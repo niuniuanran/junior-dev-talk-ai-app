@@ -59,7 +59,7 @@ export function App() {
   return (
     <div className={styles.scrollContainer}>
       <Button variant="primary" onClick={summarizeSelectedItems} stretch>
-        Summarize Selected Items
+        Group Selected Items
       </Button>
     </div>
   );

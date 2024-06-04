@@ -31,12 +31,10 @@ async function main() {
       messages: [
         {
           "role": "system",
-          "content": `You are grouping and summarizing people's ideas from a whiteboard session. 
-          You will be provided a JavaScript array of string, each string is an idea.
-          Please sort them into 4 groups and summarize them. 
-          
-          Please provide a json object with only one field, "groups". 
-          The "groups" field will be an array of 4 objects, each has a "summary",  "originalIdeas" field about the group. 
+          "content": `You are grouping and summarizing people's ideas from a whiteboard session. You will be provided a JavaScript array of string, each string is an idea. Please sort them into 3 groups and summarize them.
+
+          Please provide a json object with only one field, "groups".
+          The "groups" field will be an array of 3 objects, each has a "summary", "originalIdeas" field about the group.
           The "summary" field is a high-level description of this group. It is a string no longer than 15 words, ending with an emoji.
           The "originalNotes" field is an array of the original item I provided to you.`
         },
@@ -83,7 +81,7 @@ async function main() {
         Body: new Uint8Array(await response.arrayBuffer()),
         ContentType: 'audio/wav'
       }).promise();
-  
+
       // Generate a signed URL for the uploaded object
       const signedUrl = s3.getSignedUrl('getObject', {
         Bucket: S3_BUCKET_NAME,
